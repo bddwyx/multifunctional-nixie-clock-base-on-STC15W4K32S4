@@ -1,0 +1,11 @@
+timer0:In cordination with init0,measure the signal sent by VS1838B
+
+timer1:Modulate the beat of sound made by buzz
+
+timer2:Control the BAUD of UART1
+
+timer3:Modulate the frequency of sound made by buzz
+
+timer4:Provide an overflow frequency to involke time_refresh(ds1302's function) and keyboard_scan,and if necessary,measure the idle time of UART
+
+timer1's previous function:(possibly)Control the cycle of PWM (could be)Replace the function of timer4
