@@ -1,0 +1,17 @@
+"..\object\STARTUP.obj",
+"..\object\main.obj",
+"..\object\74hc595.obj",
+"..\object\buzz.obj",
+"..\object\DS1302.obj",
+"..\object\ISP_IAP_STC15W4K32S4.obj",
+"..\object\pwm.obj",
+"..\object\UART.obj",
+"..\object\VS1838B.obj",
+"..\object\5050rgb.obj",
+"..\object\alarm_set.obj",
+"..\object\infrared.obj",
+"..\object\ini.obj",
+"..\object\overflow.obj",
+"..\object\uart_translate.obj" 
+TO "..\object\三代01" 
+PRINT("..\listing\三代01.m51") RAMSIZE(256) 

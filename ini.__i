@@ -1,1 +1,0 @@
-"driver+user\ini.c" LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\ini.lst) OBJECT(ini.obj)

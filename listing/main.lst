@@ -1,0 +1,69 @@
+C51 COMPILER V9.54   MAIN                                                                  01/27/2020 20:53:58 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN ..\object\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\main\main.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\user\inc;..\driv
+                    -ers\inc;..\main) DEBUG OBJECTEXTEND PRINT(..\listing\main.lst) TABS(2) OBJECT(..\object\main.obj)
+
+line level    source
+
+   1          #ifndef _MAIN_C
+   2          #define _MAIN_C
+   3          
+   4          #include "config.h"
+   5          #include "main.h"
+   6          //#include "UART.h"
+   7          #include "overflow.h"
+   8          #include "uart_translate.h"
+   9          #include "ini.h"
+  10          #include "DS1302.h"
+  11          #include "alarm_set.h"
+  12          #include "infrared.h"
+  13          #include "74hc595.h"
+  14          
+  15          #endif
+  16          
+  17          void main()
+  18          {
+  19   1        main_ini();
+  20   1      
+  21   1        while(1)
+  22   1        {
+  23   2            if(T4_flag)
+  24   2          {
+  25   3              T4_flag=0;
+  26   3            vs_detect();
+  27   3          }
+  28   2      
+  29   2          if(T4_flag2)
+  30   2          {
+  31   3              T4_flag2=0;
+  32   3              time_get();
+  33   3              alarm_detect();
+  34   3              uart_process();
+  35   3          }
+  36   2      
+  37   2        }
+  38   1      
+  39   1          
+  40   1      }   
+  41          
+  42          
+  43          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     27    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.54   MAIN                                                                  01/27/2020 20:53:58 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,134 @@
+C51 COMPILER V9.54   74HC595                                                               01/27/2020 20:53:58 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE 74HC595
+OBJECT MODULE PLACED IN ..\object\74hc595.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\drivers\src\74hc595.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\user\i
+                    -nc;..\drivers\inc;..\main) DEBUG OBJECTEXTEND PRINT(..\listing\74hc595.lst) TABS(2) OBJECT(..\object\74hc595.obj)
+
+line level    source
+
+   1          #ifndef _74HC595_C
+   2          #define _74HC595_C
+   3          
+   4          #include "config.h"
+   5          #include "74hc595.h"
+   6          #include "infrared.h"
+   7          #include <stdlib.h>
+   8          
+   9          #endif
+  10          
+  11          bit tube_switch=0,date_switch=0,random_switch=0;
+  12          unsigned char tube_cnt=0;
+  13          unsigned char psec=0xff;
+  14          
+  15          unsigned char random_tube=0;random_cnt=0;
+  16          unsigned char random_bit[6];
+  17          
+  18          void transmit(unsigned char temp)
+  19          {
+  20   1          char i;
+  21   1          for(i=3;i>=0;i--)
+  22   1          {
+  23   2              ser=temp&0x08;
+  24   2            shcp=0;                     //移位输入
+  25   2            temp<<=1;
+  26   2            shcp=1;
+  27   2          }
+  28   1      }
+  29          
+  30          void tube_driver(unsigned char *tube_bit)
+  31          {
+  32   1        char i;
+  33   1      
+  34   1      //  oe_595=0;
+  35   1      
+  36   1          if(tube_switch)
+  37   1        {
+  38   2            if(!random_switch)
+  39   2          {
+  40   3              if(*(tube_bit+5)!=psec)               
+  41   3            {
+  42   4                for(i=5;i>=0;i--) transmit(*(tube_bit+i));    //将数据发送至595
+  43   4              nixie=~nixie;
+  44   4              psec=*(tube_bit+5);               //更新秒记录
+  45   4            }
+  46   3          }
+  47   2      
+  48   2          else
+  49   2          {
+  50   3            
+  51   3            if(random_cnt++==12)
+  52   3            {
+  53   4                random_cnt=0;
+  54   4              random_bit[random_tube]=rand()%9;
+C51 COMPILER V9.54   74HC595                                                               01/27/2020 20:53:58 PAGE 2   
+
+  55   4              if(random_tube<6) 
+  56   4              {
+  57   5                  random_tube++;
+  58   5              }
+  59   4      
+  60   4              else nixie=1;
+  61   4            }
+  62   3            
+  63   3            for(i=0;i<random_tube;i++) transmit(*(random_bit+i));
+  64   3            for(i=6;i>random_tube;i--) transmit(rand());
+  65   3          }
+  66   2      
+  67   2          stcp=0;                         //上升沿触发595输出
+  68   2              stcp=1;
+  69   2      
+  70   2        }
+  71   1      }
+  72          
+  73          void tube_shutdown()                //关闭
+  74          {
+  75   1          unsigned char i;
+  76   1        
+  77   1        for(i=0;i<6;i++) transmit(15);
+  78   1      
+  79   1        stcp=0;
+  80   1        stcp=1;
+  81   1      
+  82   1        tube_switch=0;
+  83   1        date_switch=0;
+  84   1        random_switch=0;
+  85   1          environment=0;
+  86   1        nixie=0;
+  87   1        psec=0xff;
+  88   1      
+  89   1        random_tube=0;
+  90   1        random_cnt=0;
+  91   1      //  oe_595=1;
+  92   1      }
+  93          
+  94          void tube_monitor()                 //定时器中调用，用来监控打开时间
+  95          {
+  96   1          if(tube_switch)
+  97   1        {
+  98   2            if(tube_cnt<230) tube_cnt++;
+  99   2          else 
+ 100   2          {
+ 101   3            tube_shutdown();
+ 102   3            tube_cnt=0;
+ 103   3          }
+ 104   2        }
+ 105   1        else tube_cnt=0;
+ 106   1      }     
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    398    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     11       4
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+C51 COMPILER V9.54   74HC595                                                               01/27/2020 20:53:58 PAGE 3   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
